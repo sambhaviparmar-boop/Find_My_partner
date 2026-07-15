@@ -36,9 +36,9 @@ const loginUser = async ({email, password}) => {
         throw new ApiError(404, "User not found");
     }
 
-    if(!user.isBlacklisted){
-        throw new ApiError(401, "Sorry, You are not authorised to login ");
-    }
+    // if(!user.isBlacklisted){
+    //     throw new ApiError(401, "Sorry, You are not authorised to login ");
+    // }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if(!isPasswordValid){
