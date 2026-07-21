@@ -4,23 +4,105 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-   url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
-
-
 model User {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String   @unique
-  password       String
-  bio            String?
-  avatar         String?
-  location       String?
-  refreshToken   String?
-  isBlacklisted  Boolean  @default(false)
-  isVerified     Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  lastLoginAt    DateTime?
-  updatedAt      DateTime @updatedAt
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  password      String
+  bio           String?
+  avatar        String?
+  location      String?
+  refreshToken  String?
+  isBlacklisted Boolean   @default(false)
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  lastLoginAt   DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  // Relation
+  fitnessPosts    FitnessPost[]
+  shoppingPosts   ShoppingPost[]
+  travelPosts     TravelPost[]
+  studyPosts      StudyPost[]
+  networkingPosts NetworkingPost[]
+}
+
+model FitnessPost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  location    String?
+  fitnessType String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdById Int
+  createdBy   User @relation(fields: [createdById], references: [id])
+}
+
+model ShoppingPost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  location    String?
+  category    String
+  budget      Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdById Int
+  createdBy   User @relation(fields: [createdById], references: [id])
+}
+
+model TravelPost {
+  id               Int      @id @default(autoincrement())
+  title            String
+  description      String
+  source           String
+  destination      String
+  travelDate       DateTime
+  transportation   String
+  budget           Int?
+  genderPreference String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  createdById Int
+  createdBy   User @relation(fields: [createdById], references: [id])
+}
+
+model StudyPost {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  subject       String
+  studyMode     String
+  location      String?
+  preferredTime String?
+  level         String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  createdById Int
+  createdBy   User @relation(fields: [createdById], references: [id])
+}
+
+model NetworkingPost {
+  id              Int      @id @default(autoincrement())
+  title           String
+  description     String
+  profession      String
+  industry        String?
+  networkingGoal  String
+  experienceLevel String
+  location        String?
+  mode            String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  createdById Int
+  createdBy   User @relation(fields: [createdById], references: [id])
 }
